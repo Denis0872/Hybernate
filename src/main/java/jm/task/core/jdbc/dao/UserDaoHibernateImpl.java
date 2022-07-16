@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
-    private final SessionFactory sessionFactory = Util.getConnection();
+
     public UserDaoHibernateImpl() {
 
     }
