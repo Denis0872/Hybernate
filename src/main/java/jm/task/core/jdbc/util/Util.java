@@ -23,20 +23,15 @@ public class Util {
     public static Connection getConnection() {
         Connection connection = null;
         try {
-            Class.forName(DRIVER).getDeclaredConstructor().newInstance();
+            Class.forName(DRIVER);
             try {
                 connection = DriverManager.getConnection(HOST, LOGIN, PASSWORD);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        } catch (ClassNotFoundException | NoSuchMethodException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+
         }
         return connection;
     }
