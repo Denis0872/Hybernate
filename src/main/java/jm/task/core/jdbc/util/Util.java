@@ -12,9 +12,10 @@ import java.util.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import javax.servlet.http.HttpServlet;
 
 
-public class Util {
+public class Util extends HttpServlet {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String HOST = "jdbc:mysql://localhost/maven?serverTimezone=Europe/Moscow&useSSL=false";
     private static final String LOGIN = "root";
@@ -23,15 +24,17 @@ public class Util {
     public static Connection getConnection() {
         Connection connection = null;
         try {
-            Class.forName(DRIVER);
+
+           //Class.forName(DRIVER);
+            //System.setProperty("jdbc.drivers","com.mysql.cj.jdbc.Driver");
+            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
             try {
                 connection = DriverManager.getConnection(HOST, LOGIN, PASSWORD);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return connection;
     }
