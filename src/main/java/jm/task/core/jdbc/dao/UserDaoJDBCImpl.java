@@ -59,8 +59,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void removeUserById(long id) {
         String DeleteById= "DELETE FROM maven.users WHERE id= " + id + " LIMIT 1 ";
-        try (PreparedStatement ps = connection.prepareStatement(DeleteById)) {
-            ps.executeUpdate();
+        try (Statement ps = connection.createStatement()) {
+            ps.executeUpdate(DeleteById);
             System.out.println("User c id- "+id+ " удален");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,8 +70,8 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() {
         List<User> allUsers = new ArrayList<>();
         String GetAllUsers = "Select id, name, lastName, age From maven.users";
-        try (Statement statement = connection.createStatement()) {
-           ResultSet rs=statement.executeQuery(GetAllUsers);
+        try (PreparedStatement statement = connection.prepareStatement(GetAllUsers)) {
+           ResultSet rs=statement.executeQuery();
             while(rs.next()){
                 User user= new User();
                 user.setId(rs.getLong(1));
