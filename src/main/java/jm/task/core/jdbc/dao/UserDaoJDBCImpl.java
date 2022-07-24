@@ -15,25 +15,23 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void createUsersTable() {
-
+        String CreateTable="CREATE TABLE IF NOT EXISTS maven.users("+
+                                "id int not null auto_increment,"+
+                                "name VARCHAR(30)," +
+                                "lastname VARCHAR(30),"+
+                                "age int,"+
+                               "PRIMARY KEY (id))";
         try (Statement statement = connection.createStatement()) {
-            String CreateTable ="CREATE TABLE IF NOT EXISTS maven.users";
-            statement.executeUpdate(CreateTable +
-                    "(id int not null auto_increment," +
-                    "name VARCHAR(30)," +
-                    "lastname VARCHAR(30)," +
-                    "age int," +
-                    "PRIMARY KEY (id))");
+            statement.executeUpdate(CreateTable);
             System.out.println("Таблица создана");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     public void dropUsersTable() {
-        try (Statement statement = connection.createStatement()) {
-            String DropTable="DROP TABLE IF EXISTS maven.users";
+        String DropTable="DROP TABLE IF EXISTS maven.users";
+        try (PreparedStatement statement = connection.prepareStatement(DropTable)) {
             statement.executeUpdate(DropTable);
             System.out.println("Таблица удалена");
         } catch (SQLException e) {
