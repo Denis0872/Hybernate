@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServlet;
 
 public class Util extends HttpServlet {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String HOST = "jdbc:mysql://localhost/maven?serverTimezone=Europe/Moscow&useSSL=false";
+    private static final String HOST = "jdbc:mysql://localhost/jdbc?serverTimezone=Europe/Moscow&useSSL=false";
     private static final String LOGIN = "root";
     private static final String PASSWORD = "12345";
 

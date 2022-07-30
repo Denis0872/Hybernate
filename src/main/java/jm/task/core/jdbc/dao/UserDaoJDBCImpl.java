@@ -15,14 +15,13 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void createUsersTable() {
-        String CreateTable="CREATE TABLE IF NOT EXISTS maven.users("+
-                                "id int not null auto_increment,"+
-                                "name VARCHAR(30)," +
-                                "lastname VARCHAR(30),"+
-                                "age int,"+
-                               "PRIMARY KEY (id))";
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate(CreateTable);
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS jdbc.users("+
+                    "id int not null auto_increment,"+
+                    "name VARCHAR(30)," +
+                    "lastname VARCHAR(30),"+
+                    "age int,"+
+                    "PRIMARY KEY (id))");
             System.out.println("Таблица создана");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -30,9 +29,8 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void dropUsersTable() {
-        String DropTable="DROP TABLE IF EXISTS maven.users";
-        try (PreparedStatement statement = connection.prepareStatement(DropTable)) {
-            statement.executeUpdate(DropTable);
+        try (PreparedStatement statement = connection.prepareStatement("DROP TABLE IF EXISTS jdbc.users")) {
+            statement.executeUpdate();
             System.out.println("Таблица удалена");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -41,8 +39,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        String InsertInto = "INSERT INTO maven.users (name, lastname, age) VALUES(?,?,?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(InsertInto)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO jdbc.users (name, lastname, age) VALUES(?,?,?)")) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
@@ -56,9 +53,8 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void removeUserById(long id) {
-        String DeleteById= "DELETE FROM maven.users WHERE id= " + id + " LIMIT 1 ";
-        try (Statement ps = connection.createStatement()) {
-            ps.executeUpdate(DeleteById);
+        try (PreparedStatement ps = connection.prepareStatement("DELETE FROM jdbc.users WHERE id= " + id + " LIMIT 1 ")) {
+            ps.executeUpdate();
             System.out.println("User c id- "+id+ " удален");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,9 +63,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public List<User> getAllUsers() {
         List<User> allUsers = new ArrayList<>();
-        String GetAllUsers = "Select id, name, lastName, age From maven.users";
         try (Statement statement = connection.createStatement()) {
-           ResultSet rs=statement.executeQuery(GetAllUsers);
+           ResultSet rs=statement.executeQuery("Select id, name, lastName, age From jdbc.users");
             while(rs.next()){
                 User user= new User();
                 user.setId(rs.getLong(1));
@@ -88,9 +83,8 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
-        String Truncate = "TRUNCATE maven.users";
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate(Truncate);
+            statement.executeUpdate("TRUNCATE jdbc.users");
             System.out.println("Таблица полностью очищена");
         } catch (SQLException e) {
             e.printStackTrace();
