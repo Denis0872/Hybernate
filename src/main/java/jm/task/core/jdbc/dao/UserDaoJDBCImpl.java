@@ -1,6 +1,5 @@
 package jm.task.core.jdbc.dao;
 
-import com.mysql.cj.protocol.Resultset;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
@@ -53,7 +52,8 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void removeUserById(long id) {
-        try (PreparedStatement ps = connection.prepareStatement("DELETE FROM jdbc.users WHERE id= " + id + " LIMIT 1 ")) {
+        try (PreparedStatement ps = connection.prepareStatement("DELETE FROM jdbc.users WHERE id= ? ")) {
+            ps.setLong(1, id);
             ps.executeUpdate();
             System.out.println("User c id- "+id+ " удален");
         } catch (SQLException e) {
